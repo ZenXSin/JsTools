@@ -2,7 +2,7 @@ package jsTools.core.events
 
 import mindustry.game.EventType
 
-object Events {
+class Events {
     val events: MutableList<String> = mutableListOf()
     fun load() {
         try {
