@@ -7,13 +7,15 @@ open class BaseBlock {
     var desc: String = ""
     var type: BlockType = Vars.BlockTypes.other
     var text: BlockParameters = BlockParameters()
-    var nowText: MutableList<BlockParameter> = mutableListOf()
-    open class BaseBlockBuild(val block: BaseBlock, val scope: String) {
+
+    open class BaseBuild(val block: BaseBlock, val scope: String) {
+        private var nowText: MutableList<BlockParameter> = mutableListOf()
+
         open fun update() {
 
         }
 
-        open fun isTurn():Pair<Boolean, String> {
+        open fun isTurn(): Pair<Boolean, String> {
             return true to "无问题"
         }
 
@@ -24,13 +26,24 @@ open class BaseBlock {
 
         }
 
-        open fun set(n: MutableList<BlockParameter>) {
 
+        open fun setNowText(n: MutableList<BlockParameter>) {
+            nowText = n
         }
+
+        open fun getNowText(): MutableList<BlockParameter> {
+            return nowText
+        }
+
+        open fun toJsText(): String  {
+            return ""
+        }
+
     }
 
-    open fun build(block: BaseBlock, scope: String): BaseBlockBuild {
-        return BaseBlockBuild(block, scope)
+
+    open fun build(block: BaseBlock, scope: String): BaseBuild {
+        return BaseBuild(block, scope)
     }
 
 }

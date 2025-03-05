@@ -23,3 +23,9 @@ tasks.test {
 kotlin {
     jvmToolchain(19)
 }
+
+tasks.jar {
+    from("libs/") {
+        include("**")
+    }
+}

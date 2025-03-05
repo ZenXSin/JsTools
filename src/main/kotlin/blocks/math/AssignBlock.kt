@@ -52,24 +52,43 @@ class AssignBlock : BaseBlock() {
         )
     }
 
-    override fun toString(): String {
-        return nowText[0].value + " " + nowText[1].value + " = " + nowText[2].value + ";"
-    }
+    class AssignBuild(block: AssignBlock, scope: String) : BaseBuild(block, scope) {
 
-    class AssignBlockBuild(block: AssignBlock, scope: String) : BaseBlockBuild(block, scope) {
-        override fun use() {
-            Vars.VarsManagement.add(block.nowText[1].name, scope, block.nowText[1].value)
+        override fun toJsText(): String {
+            val nowText = getNowText()
+            return nowText[0].value + " " + nowText[1].value + " = " + nowText[2].value + ";"
         }
 
-        override fun unUse() {
-            Vars.VarsManagement.remove(block.nowText[1].name)
+        override fun setNowText(n: MutableList<BlockParameter>) {
+            super.setNowText(n)
+            Vars.VarsManagement.remove("$scope-${getNowText()[1].name}")
+            Vars.VarsManagement.add(
+                getNowText()[1].value,
+                scope,
+                getNowText()[2].value,
+            )
+
+
         }
 
         override fun isTurn(): Pair<Boolean, String> {
-            if (Vars.VarsManagement.contains("$scope-${block.nowText[1].name}")) {
+            if (Vars.VarsManagement.contains("$scope-${getNowText()[1].name}")) {
                 return Pair(true, "变量已存在")
             }
             return super.isTurn()
         }
     }
+
+    override fun build(block: BaseBlock, scope: String): AssignBuild {
+        return AssignBuild(block as AssignBlock, scope)
+    }
+}
+
+fun main() {
+    Vars.load()
+    val ab = AssignBlock()
+    val abBuild = ab.build(ab, "Main")
+    abBuild.setNowText(ab.text.parameters[0].second)
+
+    println(abBuild.toJsText())
 }

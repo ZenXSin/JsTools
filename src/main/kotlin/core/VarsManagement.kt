@@ -7,6 +7,10 @@ class VarsManagement {
         var name: String = ""
         var scope: String = ""
         var value: String = default
+
+        override fun toString(): String {
+            return "name:$name,scope:$scope,value:$value"
+        }
     }
 
     fun load() {
