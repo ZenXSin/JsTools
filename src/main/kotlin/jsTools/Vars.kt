@@ -1,22 +1,21 @@
 package jsTools
 
-import jsTools.blocks.BlockTypes
 import jsTools.core.VarsManagement
-import jsTools.core.FunctionManagement
 import jsTools.core.events.Events
 import jsTools.core.type.Types
+import java.util.jar.JarFile
 
 object Vars {
     val VarsManagement = VarsManagement()
-    val FunctionManagement = FunctionManagement()
+    val FunctionManagement = jsTools.core.FunctionManagement()
     val Events = Events()
-    val BlockTypes = BlockTypes()
+    val BlockTypes = jsTools.blocks.BlockTypes()
     val Types = Types()
 
-    fun load() {
+    fun load(p:JarFile) {
         VarsManagement.load()
         FunctionManagement.load()
         Events.load()
-        Types.load()
+        Types.load(p)
     }
 }

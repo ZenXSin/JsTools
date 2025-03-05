@@ -2,7 +2,6 @@ package jsTools.core.type
 
 import java.net.URL
 import java.net.URLClassLoader
-import java.util.*
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
@@ -10,9 +9,9 @@ class Types {
     var mindustryType: MutableList<Pair<String, String>> = mutableListOf()
     var jsTypes :MutableList<Pair<String, String>> = mutableListOf()
 
-    fun load() {
+    fun load(p:JarFile) {
         try {
-            mindustryType = getMindustryTypes()
+            mindustryType = getMindustryTypes(p)
             jsTypes = fetchJsTypes() // 修改方法调用名称
             println("类型生成: OK")
         } catch (e: Exception) {
@@ -37,11 +36,9 @@ class Types {
         return types
     }
 
-    private fun getMindustryTypes(): MutableList<Pair<String, String>> {
+    private fun getMindustryTypes(p:JarFile): MutableList<Pair<String, String>> {
         val types: MutableList<Pair<String, String>> = mutableListOf()
-
-        val jarFilePath = "libs/host.jar"
-        val classes = getClassesFromJar(jarFilePath)
+        val classes = getClassesFromJar(p)
         for (clazz in classes) {
             if (clazz.name.contains("mindustry") && clazz.simpleName != "") {
                 types.add(Pair(clazz.simpleName, clazz.simpleName))
@@ -51,11 +48,11 @@ class Types {
     }
 }
 
-fun getClassesFromJar(jarFilePath: String): List<Class<*>> {
+fun getClassesFromJar(jarFile: JarFile): List<Class<*>> {
     val classes = mutableListOf<Class<*>>()
-    val jarFile = JarFile(jarFilePath)
     val entries = jarFile.entries()
-    val classLoader = URLClassLoader(arrayOf(URL("file:$jarFilePath")))
+    // 根据 JarFile 的路径创建 URLClassLoader
+    val classLoader = URLClassLoader(arrayOf(URL("file:${jarFile.name}")))
 
     while (entries.hasMoreElements()) {
         val entry: JarEntry = entries.nextElement()
@@ -73,6 +70,7 @@ fun getClassesFromJar(jarFilePath: String): List<Class<*>> {
             }
         }
     }
+    // 关闭传入的 JarFile 对象
     jarFile.close()
     return classes
 }

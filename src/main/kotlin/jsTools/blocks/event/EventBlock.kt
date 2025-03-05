@@ -2,13 +2,11 @@ package jsTools.blocks.event
 
 import arc.Events
 import jsTools.Vars
-import jsTools.blocks.BaseBlock
 import jsTools.blocks.BlockParameter
 import jsTools.blocks.BlockParameters
 import jsTools.blocks.BlockTypes
-import jsTools.blocks.math.AssignBlock
 
-class EventBlock: BaseBlock() {
+class EventBlock: jsTools.blocks.BaseBlock() {
 
     init {
         name = "注册事件"
@@ -53,7 +51,7 @@ class EventBlock: BaseBlock() {
         }
     }
 
-    override fun build(block: BaseBlock, scope: String): EventBuild {
+    override fun build(block: jsTools.blocks.BaseBlock, scope: String): EventBuild {
         return EventBuild(block as EventBlock, scope)
     }
 

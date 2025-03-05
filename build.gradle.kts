@@ -25,6 +25,7 @@ kotlin {
 }
 
 tasks.jar {
+    archiveFileName.set("Tools.jar")
     from("libs/") {
         include("**")
     }

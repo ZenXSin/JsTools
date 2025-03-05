@@ -1,11 +1,10 @@
 package jsTools.blocks.math
 
 import jsTools.Vars
-import jsTools.blocks.BaseBlock
 import jsTools.blocks.BlockParameter
 import jsTools.blocks.BlockParameters
 
-class AssignBlock : BaseBlock() {
+class AssignBlock : jsTools.blocks.BaseBlock() {
     init {
         type = Vars.BlockTypes.assign
         name = "赋值"
@@ -79,7 +78,7 @@ class AssignBlock : BaseBlock() {
         }
     }
 
-    override fun build(block: BaseBlock, scope: String): AssignBuild {
+    override fun build(block: jsTools.blocks.BaseBlock, scope: String): AssignBuild {
         return AssignBuild(block as AssignBlock, scope)
     }
 }
